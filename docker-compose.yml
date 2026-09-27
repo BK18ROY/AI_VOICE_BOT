@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  voice-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-voice-bot
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT:-demo-project}
+      - GOOGLE_CLOUD_LOCATION=${GOOGLE_CLOUD_LOCATION:-us-central1}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - CARTESIA_API_KEY=${CARTESIA_API_KEY:-}
+      - CARTESIA_VOICE_ID=${CARTESIA_VOICE_ID:-a0e99841-438c-4a64-b679-ae501e7d6091}
+      - WEBSOCKET_HOST=0.0.0.0
+      - WEBSOCKET_PORT=8000
+      - VAD_THRESHOLD=0.5
+      - LOG_LEVEL=INFO
+      - ENABLE_MOCK_STT=true
+      - ENABLE_MOCK_LLM=true
+      - ENABLE_MOCK_TTS=true
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - ENABLE_ASYNC_QUEUE=false
+    volumes:
+      - ./logs:/app/logs
+      - ./outputs:/app/outputs
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # Optional asynchronous queue worker / message broker
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: ai-voice-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - async-worker

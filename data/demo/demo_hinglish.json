@@ -1,0 +1,19 @@
+{
+  "scenario": "Hinglish Dealer Workshop and Service Check",
+  "language": "hinglish",
+  "caller_id": "caller_vikram",
+  "turns": [
+    {
+      "turn": 1,
+      "user": "Sir meri car ka service status check kar do, job card number JC-7711 hai.",
+      "expected_intent": "dealer_support",
+      "expected_tool": "get_service_status"
+    },
+    {
+      "turn": 2,
+      "user": "Workshop manager ka phone number kya hai?",
+      "expected_intent": "dealer_support",
+      "expected_tool": "get_dealer_details"
+    }
+  ]
+}

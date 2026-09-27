@@ -1,0 +1,19 @@
+{
+  "scenario": "Hindi Roadside Assistance and Vehicle Status",
+  "language": "hi",
+  "caller_id": "caller_ramesh",
+  "turns": [
+    {
+      "turn": 1,
+      "user": "नमस्ते, मेरी गाड़ी खराब हो गई है, तुरंत रोडसाइड असिस्टेंस चाहिए।",
+      "expected_intent": "roadside_assistance",
+      "expected_tool": "create_assistance_request"
+    },
+    {
+      "turn": 2,
+      "user": "सहायता वैन यहाँ कितनी देर में पहुंचेगी?",
+      "expected_intent": "roadside_assistance",
+      "expected_tool": "get_assistance_eta"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "scenario": "Product Warranty and Finance Inquiries",
+  "language": "en",
+  "caller_id": "caller_alex",
+  "turns": [
+    {
+      "turn": 1,
+      "user": "Hello, can you check the warranty status for SN-5521?",
+      "expected_intent": "product_support",
+      "expected_tool": "get_product_warranty"
+    },
+    {
+      "turn": 2,
+      "user": "Great, and please tell me my EMI status for account ACC-101.",
+      "expected_intent": "finance_support",
+      "expected_tool": "get_emi_details"
+    }
+  ]
+}
